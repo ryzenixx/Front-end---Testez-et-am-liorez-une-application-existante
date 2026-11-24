@@ -46,13 +46,15 @@ jest
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+Run the Cypress tests with Node.js 22.
 
 ```bash
-ng e2e
+npm run e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The command builds and serves the Angular app on port 4300. Cypress mocks the API, so no back-end or database is needed.
+
+Open `coverage/e2e/index.html` for the coverage report. The suite requires at least 80% line coverage across the application's TypeScript and Angular templates.
 
 ## Additional Resources
 

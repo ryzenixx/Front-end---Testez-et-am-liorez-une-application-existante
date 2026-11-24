@@ -1,0 +1,10 @@
+{
+  "include": ["src/**/*.ts", "src/**/*.html"],
+  "exclude": ["**/*.spec.ts", "**/*.d.ts"],
+  "extension": [".ts", ".html"],
+  "excludeAfterRemap": true,
+  "temp-dir": "dist/e2e/.nyc_output",
+  "report-dir": "coverage/e2e",
+  "reporter": ["html", "json-summary", "text-summary"],
+  "lines": 80
+}
