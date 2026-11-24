@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 import { UserService } from '../../core/service/user.service';
 import { LoginComponent } from './login.component';
 
@@ -12,7 +13,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
@@ -46,6 +47,9 @@ describe('LoginComponent', () => {
   });
 
   it('shows loading and signs in with the token returned as text', () => {
+    const navigate = jest.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    const payload = btoa(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + 60 })).replace(/=+$/, '');
+    const token = 'header.' + payload + '.signature';
     enterCredentials();
     submit();
     submit();
@@ -56,11 +60,12 @@ describe('LoginComponent', () => {
     expect(page.querySelector('fieldset')?.disabled).toBe(true);
     expect(page.querySelector('button')?.textContent?.trim()).toBe('Signing in…');
 
-    request.flush('header.payload.signature');
+    request.flush(token);
     fixture.detectChanges();
 
     expect(page.querySelector('[role="status"]')?.textContent).toBe('Signed in.');
-    expect(TestBed.inject(UserService).authToken()).toBe('header.payload.signature');
+    expect(TestBed.inject(UserService).activeToken()).toBe(token);
+    expect(navigate).toHaveBeenCalledWith('/students');
   });
 
   it('displays the server message and allows another attempt after a rejection', () => {

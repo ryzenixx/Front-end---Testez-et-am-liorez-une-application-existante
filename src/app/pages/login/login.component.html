@@ -2,7 +2,8 @@
   <h1 class="card-header h5">Sign in</h1>
   <div class="card-body">
     @if (authToken()) {
-      <p class="alert alert-success mb-0" role="status">Signed in.</p>
+      <p class="alert alert-success" role="status">Signed in.</p>
+      <a routerLink="/students">Students</a>
     } @else {
       @let loginInvalid = form.controls.login.touched && form.controls.login.invalid;
       @let passwordInvalid = form.controls.password.touched && form.controls.password.invalid;

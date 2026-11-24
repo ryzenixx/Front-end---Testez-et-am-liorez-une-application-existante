@@ -1,0 +1,40 @@
+<main class="container py-4">
+  @let message = errorMessage();
+
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <h1>Students</h1>
+    <div>
+      <a routerLink="/students/new" class="btn btn-primary mr-2">Add student</a>
+      <button type="button" class="btn btn-outline-secondary" (click)="signOut()">Sign out</button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <p role="status">Loading students…</p>
+  } @else if (message) {
+    <p class="alert alert-danger" role="alert">{{ message }}</p>
+  } @else if (students().length === 0) {
+    <p>No students.</p>
+  } @else {
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of students(); track student.id) {
+            <tr>
+              <th scope="row">
+                <a [routerLink]="['/students', student.id]">{{ student.firstName }} {{ student.lastName }}</a>
+              </th>
+              <td>{{ student.email }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</main>

@@ -1,0 +1,36 @@
+<main class="container py-4">
+  @let currentStudent = student();
+
+  <a routerLink="/students">Back to students</a>
+  <h1 class="mt-2">Student details</h1>
+
+  @if (errorMessage(); as message) {
+    <p class="alert alert-danger" role="alert">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <p role="status">Loading student…</p>
+  } @else if (currentStudent) {
+    <dl>
+      <dt>First name</dt>
+      <dd>{{ currentStudent.firstName }}</dd>
+      <dt>Last name</dt>
+      <dd>{{ currentStudent.lastName }}</dd>
+      <dt>Email</dt>
+      <dd>{{ currentStudent.email }}</dd>
+    </dl>
+
+    @if (confirmingDelete()) {
+      <p>Delete this student?</p>
+      <button type="button" class="btn btn-danger mr-2" [disabled]="deleting()" (click)="deleteStudent(currentStudent.id)">
+        {{ deleting() ? 'Deleting…' : 'Delete student' }}
+      </button>
+      <button type="button" class="btn btn-secondary" [disabled]="deleting()" (click)="confirmingDelete.set(false)">
+        Cancel
+      </button>
+    } @else {
+      <a [routerLink]="['/students', currentStudent.id, 'edit']" class="btn btn-primary mr-2">Edit</a>
+      <button type="button" class="btn btn-outline-danger" (click)="confirmingDelete.set(true)">Delete</button>
+    }
+  }
+</main>

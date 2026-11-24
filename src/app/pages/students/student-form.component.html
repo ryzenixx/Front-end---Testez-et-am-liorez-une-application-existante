@@ -1,0 +1,85 @@
+<main class="container py-4">
+  @let loadMessage = loadError();
+
+  <a routerLink="/students">Back to students</a>
+  <h1 class="mt-2">{{ studentId() === null ? 'Add student' : 'Edit student' }}</h1>
+
+  @if (loading()) {
+    <p role="status">Loading student…</p>
+  } @else if (loadMessage) {
+    <p class="alert alert-danger" role="alert">{{ loadMessage }}</p>
+  } @else {
+    @let firstNameInvalid = form.controls.firstName.touched && form.controls.firstName.invalid;
+    @let lastNameInvalid = form.controls.lastName.touched && form.controls.lastName.invalid;
+    @let emailInvalid = form.controls.email.touched && form.controls.email.invalid;
+
+    @if (saveError(); as message) {
+      <p class="alert alert-danger" role="alert">{{ message }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="saveStudent()" [attr.aria-busy]="saving()">
+      <fieldset [disabled]="saving()">
+        <div class="form-group">
+          <label for="first-name">First name</label>
+          <input
+            id="first-name"
+            class="form-control"
+            type="text"
+            formControlName="firstName"
+            required
+            maxlength="255"
+            [class.is-invalid]="firstNameInvalid"
+            [attr.aria-invalid]="firstNameInvalid ? 'true' : null"
+            [attr.aria-describedby]="firstNameInvalid ? 'first-name-error' : null"
+          />
+          @if (firstNameInvalid) {
+            <div id="first-name-error" class="invalid-feedback">Enter a first name.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="last-name">Last name</label>
+          <input
+            id="last-name"
+            class="form-control"
+            type="text"
+            formControlName="lastName"
+            required
+            maxlength="255"
+            [class.is-invalid]="lastNameInvalid"
+            [attr.aria-invalid]="lastNameInvalid ? 'true' : null"
+            [attr.aria-describedby]="lastNameInvalid ? 'last-name-error' : null"
+          />
+          @if (lastNameInvalid) {
+            <div id="last-name-error" class="invalid-feedback">Enter a last name.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="student-email">Email</label>
+          <input
+            id="student-email"
+            class="form-control"
+            type="email"
+            formControlName="email"
+            required
+            maxlength="254"
+            [class.is-invalid]="emailInvalid"
+            [attr.aria-invalid]="emailInvalid ? 'true' : null"
+            [attr.aria-describedby]="emailInvalid ? 'student-email-error' : null"
+          />
+          @if (emailInvalid) {
+            <div id="student-email-error" class="invalid-feedback">Enter a valid email address.</div>
+          }
+        </div>
+
+        <button type="submit" class="btn btn-primary mr-2">
+          {{ saving() ? 'Saving…' : (studentId() === null ? 'Add student' : 'Save changes') }}
+        </button>
+        <a [routerLink]="studentId() === null ? ['/students'] : ['/students', studentId()]" class="btn btn-secondary">
+          Cancel
+        </a>
+      </fieldset>
+    </form>
+  }
+</main>
