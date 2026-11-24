@@ -1,0 +1,59 @@
+<main class="card login-card">
+  <h1 class="card-header h5">Sign in</h1>
+  <div class="card-body">
+    @if (authToken()) {
+      <p class="alert alert-success mb-0" role="status">Signed in.</p>
+    } @else {
+      @let loginInvalid = form.controls.login.touched && form.controls.login.invalid;
+      @let passwordInvalid = form.controls.password.touched && form.controls.password.invalid;
+
+      @if (errorMessage(); as message) {
+        <p class="alert alert-danger" role="alert">{{ message }}</p>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" [attr.aria-busy]="loading()">
+        <fieldset [disabled]="loading()">
+          <div class="form-group">
+            <label for="login">Login</label>
+            <input
+              id="login"
+              type="text"
+              formControlName="login"
+              autocomplete="username"
+              class="form-control"
+              required
+              [class.is-invalid]="loginInvalid"
+              [attr.aria-invalid]="loginInvalid ? 'true' : null"
+              [attr.aria-describedby]="loginInvalid ? 'login-error' : null"
+            />
+            @if (loginInvalid) {
+              <div id="login-error" class="invalid-feedback">Enter your login.</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+              class="form-control"
+              required
+              [class.is-invalid]="passwordInvalid"
+              [attr.aria-invalid]="passwordInvalid ? 'true' : null"
+              [attr.aria-describedby]="passwordInvalid ? 'password-error' : null"
+            />
+            @if (passwordInvalid) {
+              <div id="password-error" class="invalid-feedback">Enter your password.</div>
+            }
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            {{ loading() ? 'Signing in…' : 'Sign in' }}
+          </button>
+        </fieldset>
+      </form>
+    }
+  </div>
+</main>

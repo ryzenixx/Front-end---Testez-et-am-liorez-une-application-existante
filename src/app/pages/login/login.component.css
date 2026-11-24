@@ -1,0 +1,5 @@
+.login-card {
+  max-width: 28rem;
+  margin: 1rem auto;
+  width: calc(100% - 2rem);
+}
