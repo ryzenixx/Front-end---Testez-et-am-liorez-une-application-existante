@@ -13,7 +13,7 @@
           />
           @if (submitted && form['firstName'].errors) {
             <div class="invalid-feedback">
-              @if (form['firstName'].errors?.['required']) {
+              @if (form['firstName'].errors['required']) {
                 <div>First Name is required</div>
               }
             </div>
@@ -29,7 +29,7 @@
           />
           @if (submitted && form['lastName'].errors) {
             <div class="invalid-feedback">
-              @if (form['lastName'].errors?.['required']) {
+              @if (form['lastName'].errors['required']) {
                 <div>Last Name is required</div>
               }
             </div>
@@ -46,7 +46,7 @@
         />
         @if (submitted && form['login'].errors) {
           <div class="invalid-feedback">
-            @if (form['login'].errors?.['required']) {
+            @if (form['login'].errors['required']) {
               <div>Login is required</div>
             }
           </div>
@@ -63,7 +63,7 @@
         />
         @if (submitted && form['password'].errors) {
           <div class="invalid-feedback">
-            @if (form['password'].errors?.['required']) {
+            @if (form['password'].errors['required']) {
               <div>password is required</div>
             }
           </div>
